@@ -1,39 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 const InitialState = {
-    credentials: {
+    
         username: '',
-        password: ''
-    }
+        password: '',
+    
 }
+
+// const InitialError = {
+//     submit: '',
+// }
 
 const Login = () => {
     const [state, setState] = useState(InitialState);
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
 
     const {push} = useHistory();
 
-    const handleChange = e => {
-        setState([
-            credentials:{
-                ...state.credentials,
-                [e.target.name]: e.target.value
-            }
-        ])
+    const handleChange = event => {
+        setState({
+            
+                ...state,
+                [event.target.name]: event.target.value
+            
+        })
     }
 
-    const handleLogin = e =>{
-        e.preventDefault();
-        axios.post('http://localhost:5000/api/login', state.credentials)
+    const handleLogin = event =>{
+        event.preventDefault();
+        axios.post('http://localhost:5000/api/login', state)
         .then(response=>{
-            localStorage.setItem('token', response.ModalContainer.token);
+            localStorage.setItem('token', response.data.token);
             push('/view')
         })
         .catch(error=>{
-            setError(error.response.ModalContainer.error)
+            console.error("u a failure", error)
+            setError(error.response.data.error)
         })
     }
     
@@ -41,13 +46,13 @@ const Login = () => {
         <ModalContainer>
             <h1>Welcome to Blogger Pro</h1>
             <h2>Please enter your account information.</h2>
-            <Form onSubmit={handleLogin}>
+            <FormGroup onSubmit={handleLogin}>
                 <label>Username:
                     <input
                     type="text"
                     id="username"
                     name="username"
-                    value={state.credentials.username}
+                    value={state.username}
                     onChange={handleChange}
                     />
                 </label>
@@ -57,13 +62,13 @@ const Login = () => {
                     type="password"
                     id="password"
                     name="password"
-                    value={state.credentials.password}
+                    value={state.password}
                     onChange={handleChange}
                     />
                 </label>
                 <Button id='submit'>Login</Button>
-                {error && <p id='error'>{error}</p>}
-            </Form>
+                {error && <p id="error">{error}</p>}
+            </FormGroup>
         </ModalContainer>
     </ComponentContainer>);
 }

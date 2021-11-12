@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axiosWithAuth from '../utils/axiosWithAuth';
 
 const initialArticle = {
     id:"",
@@ -12,6 +13,17 @@ const initialArticle = {
 const EditForm = (props)=> {
     const [article, setArticle]  = useState(initialArticle);
     const {handleEdit, handleEditCancel, editId} = props;
+
+    useEffect(() => {
+    axiosWithAuth()
+      .get(`http://localhost:5000/api/articles/${editId}`)
+      .then((response) => {
+        setArticle(response.data);
+      })
+      .catch((error) => {
+        console.error("CANNOT LOAD ARTICLE INFO!", error);
+      });
+    }, []);
 
     const handleChange = (e)=> {
         setArticle({
@@ -31,7 +43,8 @@ const EditForm = (props)=> {
         handleEditCancel();
     }
 
-    return(<FormContainer onSubmit={handleSubmit}>
+    return(
+    <FormContainer onSubmit={handleSubmit}>
         <h3>Edit Article</h3>
         <div>
             <label>Headline</label>
