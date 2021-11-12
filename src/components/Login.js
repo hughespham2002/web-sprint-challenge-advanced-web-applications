@@ -1,12 +1,69 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
+const InitialState = {
+    credentials: {
+        username: '',
+        password: ''
+    }
+}
 
 const Login = () => {
+    const [state, setState] = useState(InitialState);
+    const [error, setError] = useState('')
+
+    const {push} = useHistory();
+
+    const handleChange = e => {
+        setState([
+            credentials:{
+                ...state.credentials,
+                [e.target.name]: e.target.value
+            }
+        ])
+    }
+
+    const handleLogin = e =>{
+        e.preventDefault();
+        axios.post('http://localhost:5000/api/login', state.credentials)
+        .then(response=>{
+            localStorage.setItem('token', response.ModalContainer.token);
+            push('/view')
+        })
+        .catch(error=>{
+            setError(error.response.ModalContainer.error)
+        })
+    }
     
     return(<ComponentContainer>
         <ModalContainer>
             <h1>Welcome to Blogger Pro</h1>
             <h2>Please enter your account information.</h2>
+            <Form onSubmit={handleLogin}>
+                <label>Username:
+                    <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={state.credentials.username}
+                    onChange={handleChange}
+                    />
+                </label>
+
+                <label>Password:
+                    <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={state.credentials.password}
+                    onChange={handleChange}
+                    />
+                </label>
+                <Button id='submit'>Login</Button>
+                {error && <p id='error'>{error}</p>}
+            </Form>
         </ModalContainer>
     </ComponentContainer>);
 }

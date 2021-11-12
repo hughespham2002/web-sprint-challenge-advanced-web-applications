@@ -15,14 +15,13 @@ const App = () => {
       <LambdaHeader/>
       <Header/>
       <RouteContainer>
-        <Route exact path="/">
-          <Login/>
-        </Route>          
+        <Route exact path="/"/>
+        <Route path="/login"component={Login}/>
+        <PrivateRoute path="/view"component={View}/>
+        <PrivateRoute path="/logout"component={Logout}/>
       </RouteContainer>
     </AppContainer>
-  )
-}
-
+  )}
 export default App;
 
 //Task List
