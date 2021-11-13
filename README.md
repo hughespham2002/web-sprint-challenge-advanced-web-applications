@@ -122,8 +122,16 @@ In this project, you will demonstrate your mastery of these skills by creating *
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics. Add your answers to the questions within `interview_answers.md` file. These will not be counted as a part of your sprint score but will be helpful for preparing you for your endorsement interview, and enhancing overall understanding.
 1. Explain what a token is used for.
 
+tokens are used to access control and authentication
+
 2. What steps can you take in your web apps to keep your data secure?
+
+Encrypt login pages, Require Injection & Input Validation, Apply Authentication, Role Management & Access Control.
 
 3. Describe how web servers work.
 
+A page on internet can be viewed, when the browser requests it from the web server and the web server responds with that page.
+
 4. Which HTTP methods can be mapped to the CRUD acronym that we use when interfacing with APIs/Servers.
+
+post, get, put, patch, and delete
